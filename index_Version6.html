@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FINOPLAY — Join Fino in Exploring the World of Financial Data</title>
+  <style>
+    :root{
+      --blue-700:#0b63d6;
+      --blue-500:#1e88ff;
+      --blue-100:#e6f0ff;
+      --white:#ffffff;
+      --muted:#6b7280;
+      font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      background: linear-gradient(180deg,var(--blue-100) 0%, #f7fbff 60%);
+      color:#07304a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .hero{
+      background: linear-gradient(90deg,var(--blue-700), var(--blue-500));
+      color:var(--white);
+      padding:28px 16px;
+    }
+    .hero-inner{
+      max-width:1000px;
+      margin:0 auto;
+      text-align:center;
+    }
+    .subtitle{ margin:0; font-weight:600; opacity:0.95; }
+    .title{ margin:8px 0 6px; font-size:44px; letter-spacing:4px; }
+    .tagline{ margin:12px auto 0; max-width:900px; color:rgba(255,255,255,0.95); line-height:1.45; }
+
+    .container{ max-width:1000px; margin:20px auto; padding:0 16px 40px; }
+    .panel{ background:var(--white); border-radius:12px; padding:18px; box-shadow:0 6px 18px rgba(11,99,214,0.08); }
+    .game-card{ border:1px solid #e6f0ff; padding:12px; margin:12px 0; border-radius:10px; background:linear-gradient(180deg,#fff,#f6fbff); }
+    .game-card h4{ margin:0 0 6px }
+    .game-card p{ margin:0 0 12px; color:var(--muted) }
+
+    .controls-row{ display:flex; gap:12px; align-items:center; justify-content:space-between; }
+    .status-inline{ display:flex; gap:12px; align-items:center; }
+    button{ background:var(--blue-700); color:var(--white); border:0; padding:10px 14px; border-radius:8px; cursor:pointer; font-weight:600; }
+    button[disabled]{ opacity:0.45; cursor:not-allowed; }
+
+    .reset-btn{ background:transparent; color:var(--white); border:1px solid rgba(255,255,255,0.12); padding:8px 10px; border-radius:8px; font-weight:600; cursor:pointer; }
+
+    .hidden{ display:none; }
+    .game-area{ margin-top:12px; }
+    .bubbles{ min-height:160px; border-radius:8px; background: linear-gradient(180deg,#f8fbff,#ffffff); padding:12px; position:relative; overflow:hidden; border:1px dashed #e6f0ff; }
+    .bubble{ position:absolute; padding:8px 12px; background:#fff; border:2px solid var(--blue-500); border-radius:999px; color:var(--blue-700); font-weight:600; cursor:pointer; user-select:none; box-shadow:0 6px 12px rgba(14,78,146,0.08); transition:transform 200ms, opacity 300ms; }
+    .bubble:active{ transform:scale(0.98); box-shadow:none; }
+
+    form{ margin-top:8px; }
+    .question{ border:1px solid #eef6ff; padding:10px; margin-bottom:8px; border-radius:8px; background:linear-gradient(180deg,#fff,#fbfeff); }
+    .q-title{ font-weight:700; }
+    .choices{ margin-top:6px; display:flex; gap:8px; flex-wrap:wrap; }
+    .choice{ display:inline-flex; gap:8px; align-items:center; padding:8px 10px; border-radius:8px; background:#f3f9ff; cursor:pointer; border:1px solid #e6f4ff; user-select:none; transition:background 160ms, border-color 160ms, transform 120ms; }
+    .choice:hover{ transform: translateY(-2px); }
+    .choice strong{ font-weight:700; color:var(--blue-700); }
+    .choice span{ color:#083049; }
+    .choice.selected{ background: linear-gradient(180deg,#e9f2ff,#d9ecff); border-color:var(--blue-700); box-shadow:0 6px 14px rgba(14,78,146,0.06); }
+
+    .alloc-table{ width:100%; border-collapse:collapse; margin-bottom:12px; }
+    .alloc-table th, .alloc-table td{ text-align:left; padding:8px; border-bottom:1px solid #f1f5f9; }
+    .controls{ margin-top:12px; display:flex; gap:8px; }
+    .note{ margin-top:6px; color:var(--muted); font-size:13px; }
+
+    #quiz-result, #simulation-result{ margin-top:12px; padding:12px; border-radius:8px; background:#fbfeff; border:1px solid #e6f4ff; }
+
+    .footer{ max-width:1000px; margin:16px auto; padding:0 16px 36px; text-align:center; color:var(--muted); font-size:13px; }
+
+    @media (max-width:720px){
+      .controls-row{ flex-direction:column; align-items:stretch; gap:8px; }
+      .status-inline{ justify-content:space-between; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <h2 class="subtitle">Join Fino in Exploring the World of Financial Data</h2>
+      <h1 class="title">FINOPLAY</h1>
+      <p class="tagline">Trong tương lai gần, thế giới tài chính bị “nhiễu loạn dữ liệu” — hàng tỷ giao dịch và thông tin sai lệch khiến con người không thể ra quyết định. Fino – một AI trẻ thuộc Học viện Finovate – được giao nhiệm vụ: giải mã tương lai tài chính bằng sức mạnh của dữ liệu. Mỗi màn chơi tương ứng với một kỹ năng quan trọng của Data Analyst, và cũng là một chặng trong hành trình tiến hóa của Fino. Bạn là “Data Analyst đồng hành” cùng Fino, và phải vượt qua thử thách để khôi phục lại “Trí tuệ Tài chính Toàn Cầu”.</p>
+      <div style="margin-top:12px;">
+        <button id="reset-progress" class="reset-btn" title="Xóa tiến trình đã lưu">Reset progress</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="hub" class="hub">
+      <div class="panel">
+        <h3>Games Hub</h3>
+        <p>Hoàn thành mỗi trò chơi theo thứ tự để tiến tới thử thách tiếp theo.</p>
+
+        <div class="game-card" id="game1-card">
+          <h4>1 — DATA CHAOS</h4>
+          <p>Nhấp vào các bong bóng chứa thuật ngữ kinh tế. Có 3 vòng (15s, 17s, 20s). Mỗi lựa chọn đúng +1,000,000; sai -1,000,000. Điểm lưu vào bộ nhớ (localStorage). Bạn có thể replay Data Chaos bất kỳ lúc nào.</p>
+          <div class="controls-row">
+            <button id="start-game1">Bắt đầu DATA CHAOS</button>
+            <div class="status-inline">
+              <span id="g1-round">Vòng: —</span>
+              <span id="g1-timer">Thời gian: —</span>
+              <span id="g1-score">Điểm: 0 VND</span>
+            </div>
+          </div>
+          <div id="game1-area" class="game-area hidden">
+            <div id="bubbles" class="bubbles" aria-live="polite" aria-label="Khu vực bong bóng"></div>
+            <div class="note">Bạn cần hoàn tất cả 3 vòng để mở khóa trò chơi tiếp theo.</div>
+          </div>
+        </div>
+
+        <div class="game-card" id="game2-card">
+          <h4>2 — PATTERN GUESS</h4>
+          <p>Bài kiểm tra nhiều lựa chọn (10 câu). Chỉ mở khi đã hoàn thành DATA CHAOS.</p>
+          <div class="controls-row">
+            <button id="start-game2" disabled>Bắt đầu PATTERN GUESS</button>
+            <div class="status-inline">
+              <span id="g2-status">Trạng thái: Khóa</span>
+            </div>
+          </div>
+
+          <div id="game2-area" class="game-area hidden">
+            <form id="quiz-form" autocomplete="off" novalidate>
+              <div id="questions" class="questions"></div>
+              <div class="controls" style="margin-top:10px">
+                <button type="submit" id="submit-quiz">Nộp bài</button>
+                <button type="button" id="reset-quiz">Làm lại (chưa nộp)</button>
+              </div>
+            </form>
+            <div id="quiz-result" class="hidden"></div>
+          </div>
+        </div>
+
+        <div class="game-card" id="game3-card">
+          <h4>3 — INVEST & SIMULATE</h4>
+          <p>Sử dụng tiền kiếm được ở DATA CHAOS và gói dữ liệu từ PATTERN GUESS để phân bổ vốn vào 4 lĩnh vực. Sau đó xem lợi nhuận/khoản lỗ dự kiến.</p>
+          <div class="controls-row">
+            <button id="start-game3" disabled>Bắt đầu INVEST & SIMULATE</button>
+            <div class="status-inline">
+              <span>Tiền khả dụng: <strong id="available-money">0 VND</strong></span>
+              <span>Gói dữ liệu: <strong id="data-package">—</strong></span>
+            </div>
+          </div>
+
+          <div id="game3-area" class="game-area hidden">
+            <form id="alloc-form">
+              <table class="alloc-table" aria-label="Bảng phân bổ đầu tư">
+                <thead>
+                  <tr>
+                    <th>Khu vực</th><th>Đơn vị</th><th>Giá/đơn vị</th><th>Đầu tư (số đơn vị)</th><th>Chi phí (VND)</th>
+                  </tr>
+                </thead>
+                <tbody id="allocations-body"></tbody>
+              </table>
+              <div class="controls">
+                <button type="button" id="auto-fill">Tự động điền (tối đa)</button>
+                <button type="submit">Tính toán kết quả</button>
+              </div>
+            </form>
+
+            <div id="simulation-result" class="hidden"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>FINOPLAY — Học viện Finovate • Màu chủ đạo: Xanh dương và Trắng</small>
+  </footer>
+
+  <script>
+    (function () {
+      // Helpers
+      const $ = (s, r=document) => r.querySelector(s);
+      const fmtVND = n => (Number(n)||0).toLocaleString('vi-VN') + ' VND';
+      const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+      const round = (v,p=2) => Math.round(v*Math.pow(10,p))/Math.pow(10,p);
+
+      // DOM
+      const startG1 = $('#start-game1');
+      const game1Area = $('#game1-area');
+      const g1Round = $('#g1-round');
+      const g1Timer = $('#g1-timer');
+      const g1ScoreEl = $('#g1-score');
+      const bubblesEl = $('#bubbles');
+
+      const startG2 = $('#start-game2');
+      const game2Area = $('#game2-area');
+      const questionsEl = $('#questions');
+      const quizForm = $('#quiz-form');
+      const quizResult = $('#quiz-result');
+      const resetQuizBtn = $('#reset-quiz');
+
+      const startG3 = $('#start-game3');
+      const game3Area = $('#game3-area');
+      const availableMoneyEl = $('#available-money');
+      const dataPackageEl = $('#data-package');
+      const allocationsBody = $('#allocations-body');
+      const allocForm = $('#alloc-form');
+      const autoFillBtn = $('#auto-fill');
+      const simulationResult = $('#simulation-result');
+
+      const resetProgressBtn = $('#reset-progress');
+
+      // Storage keys
+      const LS = {
+        GAME1_SCORE: 'finoplay:game1:score',
+        GAME1_DONE: 'finoplay:game1:done',
+        GAME2_DONE: 'finoplay:game2:done',
+        GAME2_SCORE: 'finoplay:game2:score',
+        DATA_PACKAGE: 'finoplay:data:package',
+        GAME3_RESULT: 'finoplay:game3:result'
+      };
+      const read = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){return null} };
+      const write = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+      const remove = k => localStorage.removeItem(k);
+
+      // Game data
+      const economicsTerms = [
+        "Giá vàng tăng mạnh","Lạm phát vượt mục tiêu","Ngân hàng trung ương tăng lãi suất",
+        "Thị trường chứng khoán sụt giảm","Đồng USD tăng giá","Doanh thu ngân hàng kỹ thuật số",
+        "Dòng vốn đầu tư nước ngoài","Nợ công toàn cầu gia tăng"
+      ];
+      const nonEconomicsTerms = [
+        "Cuộc thi hoa hậu thế giới","Phim Marvel mới ra mắt","Cúp bóng đá châu Âu",
+        "Lễ hội âm nhạc quốc tế","Sự kiện thời trang Paris","Giải Nobel văn học công bố",
+        "Chiến dịch trồng cây xanh toàn cầu"
+      ];
+
+      const G1_POINT = 1000000;
+      const G1_NEG = -1000000;
+      const G1_ROUNDS = [15,17,20];
+
+      const QUIZ = [
+        { q: 'Câu 1: Một túi có 3 bi xanh, 2 bi đỏ. Xác suất rút được bi đỏ là:', choices: ['1/5','2/5','3/5','1/2'], answer: 'B' },
+        { q: 'Câu 2: Nếu bạn gửi 10 triệu với lãi suất 10%/năm, sau 1 năm bạn có:', choices:['10 triệu','12 triệu','11 triệu','10,5 triệu'], answer: 'C' },
+        { q: 'Câu 3: Giá cổ phiếu tăng từ 100 lên 110. Mức tăng là:', choices:['5%','10%','20%','25%'], answer: 'B' },
+        { q: 'Câu 4: Một tệp dữ liệu có các giá trị: 1,2,2,3,3,3,9,7,6,9. Giá trị xuất hiện nhiều nhất là:', choices:['2','3','5','9'], answer: 'B' },
+        { q: 'Câu 5: Trong biểu đồ xu hướng, đường đi lên thể hiện điều gì?', choices:['Dữ liệu giảm','Dữ liệu tăng','Dữ liệu ổn định','Không thể hiện gì'], answer: 'B' },
+        { q: 'Câu 6: Một cổ phiếu tăng 10% vào ngày thứ nhất rồi giảm 10% vào ngày thứ hai. Tổng kết, giá trị thay đổi như thế nào?', choices:['Tăng 0%','Giảm 1%','Giảm 10%','Tăng 1%'], answer: 'B' },
+        { q: 'Câu 7: Nếu bạn gửi 10 triệu với lãi suất kép 5%/năm trong 2 năm, bạn nhận được:', choices:['10.5 triệu','11.025 triệu','11 triệu','10.75 triệu'], answer: 'B' },
+        { q: 'Câu 8: Một bộ dữ liệu có các giá trị: 2,4,6,8,10. Trung bình cộng là:', choices:['6','7','5','8'], answer: 'A' },
+        { q: 'Câu 9: Một nhà đầu tư chọn ngẫu nhiên 1 trong 4 dự án: A (40% lợi nhuận), B (20%), C (10%), D (30%). Dự án nào có kỳ vọng lợi nhuận cao nhất nếu xác suất thành công bằng nhau?', choices:['A','B','C','D'], answer:'A' },
+        { q: 'Câu 10: Nếu tỷ lệ lạm phát năm nay là 4%, điều đó có nghĩa là:', choices:['Giá cả trung bình tăng 4%','Tiền lương tăng 4%','Giá vàng tăng 4%','Tiết kiệm tăng 4%'], answer:'A' }
+      ];
+
+      const PACKAGES = {
+        low: { name: 'Conservative Package (0-4 đúng)', bullets: ['Lãi suất ngân hàng ổn định 5%','VN-Index dao động ±1%','Giá vàng tăng nhẹ 2%','Một số startup fintech mới ra mắt, biến động cao'], level:0 },
+        mid: { name: 'Moderate Package (5-8 đúng)', bullets: ['Lãi suất tăng nhẹ 5–5.5%','VN-Index tăng 2% tháng vừa rồi','Giá vàng tăng 3%, dầu biến động ±5%','Startup fintech tăng trưởng vừa phải','Niềm tin tiêu dùng tăng nhẹ'], level:1 },
+        high: { name: 'Bullish Package (9-10 đúng)', bullets: ['VN-Index tăng/giảm ±4%','Giá dầu tăng 10%, biến động mạnh','Cổ phiếu công nghệ tăng mạnh 15%','Startup fintech gọi vốn thành công liên tiếp','Niềm tin người tiêu dùng tăng 5%'], level:2 }
+      };
+
+      const SECTORS = [
+        { key:'gov_bond', name:'Trái phiếu chính phủ', unitPrice:1000000, unitName:'trái phiếu', roiRange:[5,5], amplitudePct:0.5 },
+        { key:'gold', name:'Vàng & hàng hóa quý', unitPrice:1300000, unitName:'lượng vàng', roiRange:[3,6], amplitudePct:1.5 },
+        { key:'stocks', name:'Cổ phiếu công nghệ / blue-chip', unitPrice:250000, unitName:'cổ phiếu', roiRange:[8,15], amplitudePct:4 },
+        { key:'startup', name:'Startup fintech / AI', unitPrice:1000000, unitName:'đơn vị đầu tư', roiRange:[10,20], amplitudePct:6 }
+      ];
+
+      // Initialization UI from storage (allows replay of Game1)
+      function initUIFromStorage() {
+        const g1Done = read(LS.GAME1_DONE);
+        const g1Score = read(LS.GAME1_SCORE) || 0;
+        const g2Done = read(LS.GAME2_DONE);
+        const dataPackage = read(LS.DATA_PACKAGE);
+
+        // Allow replaying Game1 always (so button is clickable)
+        startG1.disabled = false;
+        startG1.textContent = g1Done ? 'Replay DATA CHAOS' : 'Bắt đầu DATA CHAOS';
+
+        g1ScoreEl.textContent = 'Điểm: ' + fmtVND(g1Score);
+
+        if (g1Done) {
+          startG2.disabled = false;
+          $('#g2-status').textContent = 'Trạng thái: Mở khóa';
+        } else {
+          startG2.disabled = true;
+          $('#g2-status').textContent = 'Trạng thái: Khóa';
+        }
+
+        if (g2Done) {
+          startG2.textContent = 'PATTERN GUESS (Đã hoàn thành)';
+          startG2.disabled = true;
+          startG3.disabled = false;
+        }
+
+        dataPackageEl.textContent = dataPackage ? dataPackage.name : '—';
+        availableMoneyEl.textContent = fmtVND(g1Score || 0);
+      }
+
+      initUIFromStorage();
+
+      // Reset progress
+      resetProgressBtn.addEventListener('click', function () {
+        if (!confirm('Xóa tiến trình (localStorage) của FINOPLAY?')) return;
+        Object.values(LS).forEach(k => localStorage.removeItem(k));
+        location.reload();
+      });
+
+      // Game 1
+      startG1.addEventListener('click', function () {
+        game1Area.classList.remove('hidden');
+        runGame1().then(finalScore => {
+          write(LS.GAME1_SCORE, finalScore);
+          write(LS.GAME1_DONE, true);
+          g1ScoreEl.textContent = 'Điểm: ' + fmtVND(finalScore);
+          startG1.textContent = 'Replay DATA CHAOS';
+          startG2.disabled = false;
+          $('#g2-status').textContent = 'Trạng thái: Mở khóa';
+          availableMoneyEl.textContent = fmtVND(finalScore);
+          alert('DATA CHAOS hoàn tất! Bạn có thể tiến tới PATTERN GUESS.');
+        }).catch(err => {
+          console.error('runGame1 error', err);
+          alert('Đã có lỗi khi chạy DATA CHAOS. Mở Console để xem chi tiết.');
+        });
+      });
+
+      function runGame1() {
+        return new Promise((resolve) => {
+          let score = 0;
+          let roundIndex = 0;
+          g1ScoreEl.textContent = 'Điểm: ' + fmtVND(score);
+
+          function startRound() {
+            if (roundIndex >= G1_ROUNDS.length) {
+              bubblesEl.innerHTML = '';
+              g1Round.textContent = 'Vòng: Hoàn tất';
+              g1Timer.textContent = 'Thời gian: 0s';
+              resolve(score);
+              return;
+            }
+            const duration = G1_ROUNDS[roundIndex];
+            let timeLeft = duration;
+            g1Round.textContent = 'Vòng: ' + (roundIndex + 1) + '/' + G1_ROUNDS.length;
+            g1Timer.textContent = 'Thời gian: ' + timeLeft + 's';
+            bubblesEl.innerHTML = '';
+
+            const spawnTimer = setInterval(spawnBubble, 800);
+            const tick = setInterval(() => {
+              timeLeft--;
+              g1Timer.textContent = 'Thời gian: ' + timeLeft + 's';
+              if (timeLeft <= 0) {
+                clearInterval(tick);
+                clearInterval(spawnTimer);
+                Array.from(bubblesEl.children).forEach(b => { b.style.opacity = '0.25'; b.style.pointerEvents = 'none'; });
+                setTimeout(function () { roundIndex++; startRound(); }, 700);
+              }
+            }, 1000);
+
+            function spawnBubble() {
+              const isEconomics = Math.random() < 0.6;
+              const text = isEconomics ? pick(economicsTerms) : pick(nonEconomicsTerms);
+              const bubble = document.createElement('button');
+              bubble.className = 'bubble';
+              bubble.type = 'button';
+              bubble.textContent = text;
+              bubble.setAttribute('aria-pressed', 'false');
+
+              const containerRect = bubblesEl.getBoundingClientRect();
+              const top = Math.random() * Math.max(0, (containerRect.height || 160) - 40);
+              const left = Math.random() * Math.max(0, (containerRect.width || 600) - 180);
+              bubble.style.top = top + 'px';
+              bubble.style.left = left + 'px';
+              bubble.style.transform = 'scale(' + (0.9 + Math.random()*0.6) + ')';
+
+              let clicked = false;
+              bubble.addEventListener('click', function () {
+                if (clicked) return;
+                clicked = true;
+                bubble.setAttribute('aria-pressed','true');
+                const correct = economicsTerms.indexOf(text) !== -1;
+                if (correct) {
+                  score += G1_POINT;
+                  bubble.style.background = '#e6fff7';
+                  bubble.style.borderColor = '#00a86b';
+                } else {
+                  score += G1_NEG;
+                  bubble.style.background = '#fff0f0';
+                  bubble.style.borderColor = '#e03a3a';
+                }
+                g1ScoreEl.textContent = 'Điểm: ' + fmtVND(score);
+                bubble.style.pointerEvents = 'none';
+                bubble.style.opacity = '0.6';
+              });
+
+              bubblesEl.appendChild(bubble);
+              setTimeout(function () { if (bubble.parentElement) bubble.remove(); }, 3500 + Math.random()*1500);
+            }
+          }
+
+          startRound();
+        });
+      }
+
+      // Game 2: Quiz rendering and submit
+      startG2.addEventListener('click', function () {
+        game2Area.classList.remove('hidden');
+        renderQuiz();
+      });
+
+      function renderQuiz() {
+        questionsEl.innerHTML = '';
+        QUIZ.forEach(function (item, idx) {
+          const qWrap = document.createElement('div');
+          qWrap.className = 'question';
+          qWrap.innerHTML = '<div class="q-title">' + item.q + '</div>';
+          const choicesWrap = document.createElement('div');
+          choicesWrap.className = 'choices';
+          const labels = ['A','B','C','D'];
+          labels.forEach(function (label, cIdx) {
+            const text = item.choices[cIdx];
+            if (!text) return;
+            const id = 'q' + idx + '_c' + cIdx;
+            const choice = document.createElement('label');
+            choice.className = 'choice';
+            choice.setAttribute('role','button');
+            choice.tabIndex = 0;
+
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = 'q' + idx;
+            input.value = label;
+            input.id = id;
+            input.style.display = 'none';
+
+            const strong = document.createElement('strong');
+            strong.textContent = label;
+            const span = document.createElement('span');
+            span.textContent = text;
+            span.style.marginLeft = '8px';
+
+            choice.appendChild(input);
+            choice.appendChild(strong);
+            choice.appendChild(span);
+
+            const selectChoice = function (ev) {
+              if (ev) ev.preventDefault();
+              choicesWrap.querySelectorAll('.choice').forEach(function (c) { c.classList.remove('selected'); });
+              input.checked = true;
+              choice.classList.add('selected');
+            };
+            choice.addEventListener('click', selectChoice);
+            choice.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') selectChoice(ev); });
+
+            choicesWrap.appendChild(choice);
+          });
+
+          qWrap.appendChild(choicesWrap);
+          questionsEl.appendChild(qWrap);
+        });
+
+        // expose for console debugging
+        window.renderQuiz = renderQuiz;
+      }
+
+      quizForm.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        try {
+          if (!questionsEl || questionsEl.children.length === 0) {
+            renderQuiz();
+            alert('Đã khởi tạo lại bài quiz. Vui lòng chọn đáp án rồi nhấn Nộp bài lại.');
+            return;
+          }
+
+          const g1Done = read(LS.GAME1_DONE);
+          if (!g1Done) {
+            alert('Bạn phải hoàn thành DATA CHAOS trước khi nộp PATTERN GUESS.');
+            return;
+          }
+
+          let correctCount = 0;
+          QUIZ.forEach(function (item, idx) {
+            const sel = quizForm.querySelector('input[name="q' + idx + '"]:checked');
+            const val = sel ? sel.value : null;
+            if (val === item.answer) correctCount++;
+          });
+
+          write(LS.GAME2_DONE, true);
+          write(LS.GAME2_SCORE, correctCount);
+
+          var pkg = PACKAGES.low;
+          if (correctCount >= 9) pkg = PACKAGES.high;
+          else if (correctCount >= 5) pkg = PACKAGES.mid;
+          write(LS.DATA_PACKAGE, pkg);
+
+          quizResult.classList.remove('hidden');
+          quizResult.innerHTML = '<h4>Kết quả: ' + correctCount + '/10 đúng</h4>' +
+            '<p>Gói dữ liệu được cấp: <strong>' + pkg.name + '</strong></p>' +
+            '<ul>' + pkg.bullets.map(function(b){ return '<li>' + b + '</li>'; }).join('') + '</ul>';
+
+          Array.from(quizForm.querySelectorAll('input')).forEach(function(i){ i.disabled = true; });
+          startG2.textContent = 'PATTERN GUESS (Đã hoàn thành)';
+          startG2.disabled = true;
+          startG3.disabled = false;
+
+          dataPackageEl.textContent = pkg.name;
+          quizResult.scrollIntoView({behavior:'smooth', block:'center'});
+          alert('PATTERN GUESS hoàn tất! Bạn có thể bắt đầu INVEST & SIMULATE.');
+        } catch (err) {
+          console.error('quiz submit error', err);
+          alert('Đã xảy ra lỗi khi nộp bài — xem Console (F12) để biết chi tiết.');
+        }
+      });
+
+      resetQuizBtn.addEventListener('click', function () {
+        renderQuiz();
+        quizResult.classList.add('hidden');
+        Array.from(quizForm.querySelectorAll('input')).forEach(function (i) { i.disabled = false; });
+      });
+
+      // Game 3: Allocation & simulation
+      startG3.addEventListener('click', function () {
+        const g1Done = read(LS.GAME1_DONE);
+        const g2Done = read(LS.GAME2_DONE);
+        if (!g1Done || !g2Done) {
+          alert('Bạn cần hoàn thành cả DATA CHAOS và PATTERN GUESS trước khi bắt đầu.');
+          return;
+        }
+        game3Area.classList.remove('hidden');
+        populateAllocationTable();
+      });
+
+      function populateAllocationTable() {
+        allocationsBody.innerHTML = '';
+        const money = read(LS.GAME1_SCORE) || 0;
+        availableMoneyEl.textContent = fmtVND(money);
+        const pkg = read(LS.DATA_PACKAGE) || PACKAGES.low;
+        dataPackageEl.textContent = pkg.name;
+
+        SECTORS.forEach(function (s) {
+          const tr = document.createElement('tr');
+          const inputId = 'alloc_' + s.key;
+          tr.innerHTML = '<td>' + s.name + '</td>' +
+            '<td>' + s.unitName + '</td>' +
+            '<td>' + fmtVND(s.unitPrice) + '</td>' +
+            '<td><input id="' + inputId + '" type="number" min="0" value="0" style="width:110px" /></td>' +
+            '<td id="' + inputId + '_cost">' + fmtVND(0) + '</td>';
+          allocationsBody.appendChild(tr);
+
+          var inputEl = document.getElementById(inputId);
+          var costEl = document.getElementById(inputId + '_cost');
+          inputEl.addEventListener('input', function () {
+            var units = Math.max(0, Math.floor(Number(inputEl.value) || 0));
+            inputEl.value = units;
+            costEl.textContent = fmtVND(units * s.unitPrice);
+          });
+        });
+      }
+
+      autoFillBtn.addEventListener('click', function () {
+        const money = read(LS.GAME1_SCORE) || 0;
+        if (money <= 0) { alert('Bạn không có đủ tiền để tự động điền.'); return; }
+        const sorted = SECTORS.slice().sort(function(a,b){ return a.unitPrice - b.unitPrice; });
+        var remaining = money;
+        sorted.forEach(function (s) {
+          var units = Math.floor(remaining / s.unitPrice);
+          var inEl = document.getElementById('alloc_' + s.key);
+          var costEl = document.getElementById('alloc_' + s.key + '_cost');
+          inEl.value = units;
+          costEl.textContent = fmtVND(units * s.unitPrice);
+          remaining -= units * s.unitPrice;
+        });
+        alert('Đã tự động điền tối đa theo tiền khả dụng.');
+      });
+
+      allocForm.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        const money = read(LS.GAME1_SCORE) || 0;
+        const pkg = read(LS.DATA_PACKAGE) || PACKAGES.low;
+
+        const allocations = SECTORS.map(function (s) {
+          const units = Math.max(0, Math.floor(Number(document.getElementById('alloc_' + s.key).value) || 0));
+          return { sector: s, units: units, invested: units * s.unitPrice };
+        });
+
+        const totalInvested = allocations.reduce(function(a,b){ return a + b.invested; }, 0);
+        if (totalInvested > money) {
+          alert('Tổng đầu tư ' + fmtVND(totalInvested) + ' vượt quá số tiền khả dụng ' + fmtVND(money) + '. Vui lòng điều chỉnh.');
+          return;
+        }
+
+        const results = simulateInvestments(allocations, pkg.level);
+        write(LS.GAME3_RESULT, { allocations: allocations, results: results, totalInvested: totalInvested, money: money, package: pkg });
+        renderSimulationResults({ allocations: allocations, results: results, totalInvested: totalInvested, money: money, package: pkg });
+      });
+
+      function simulateInvestments(allocations, packageLevel) {
+        const results = [];
+        allocations.forEach(function (a) {
+          const s = a.sector;
+          var baseMin = s.roiRange[0], baseMax = s.roiRange[1];
+          if (packageLevel === 0) { baseMin *= 0.9; baseMax *= 0.9; }
+          if (packageLevel === 2) { baseMin *= 1.05; baseMax *= 1.15; }
+          const roiPct = (baseMin === baseMax) ? baseMin : (baseMin + Math.random()*(baseMax-baseMin));
+          var ampMultiplier = 1.2;
+          if (packageLevel === 1) ampMultiplier = 1.0;
+          if (packageLevel === 2) ampMultiplier = 0.9;
+          const actualAmp = s.amplitudePct * ampMultiplier;
+          const marketSwingPct = (Math.random()*2 - 1) * actualAmp;
+          const profit = a.invested * (roiPct/100) + a.invested * (marketSwingPct/100);
+          results.push({ key: s.key, name: s.name, units: a.units, invested: a.invested, roiPct: round(roiPct,2), marketSwingPct: round(marketSwingPct,2), profit: Math.round(profit) });
+        });
+        return results;
+      }
+
+      function renderSimulationResults(payload) {
+        const pkg = payload.package;
+        simulationResult.classList.remove('hidden');
+        var html = '<h4>Kết quả mô phỏng — Gói: ' + pkg.name + '</h4>';
+        html += '<p>Số tiền khả dụng: <strong>' + fmtVND(payload.money) + '</strong> — Tổng đầu tư: <strong>' + fmtVND(payload.totalInvested) + '</strong></p>';
+        html += '<table style="width:100%;border-collapse:collapse"><thead><tr><th style="text-align:left;padding:6px">Khu vực</th><th style="padding:6px">Đầu tư</th><th style="padding:6px">ROI (%)</th><th style="padding:6px">Swing (%)</th><th style="padding:6px">Lợi/Nhược (VND)</th></tr></thead><tbody>';
+        var totalProfit = 0;
+        payload.results.forEach(function (r) {
+          totalProfit += r.profit;
+          html += '<tr><td style="padding:6px">' + r.name + ' — ' + r.units + ' đơn vị</td>' +
+                  '<td style="padding:6px">' + fmtVND(r.invested) + '</td>' +
+                  '<td style="padding:6px">' + r.roiPct + '%</td>' +
+                  '<td style="padding:6px">' + r.marketSwingPct + '%</td>' +
+                  '<td style="padding:6px">' + fmtVND(r.profit) + '</td></tr>';
+        });
+        html += '</tbody></table>';
+        html += '<h4>Tổng lợi nhuận / lỗ dự kiến: <strong>' + fmtVND(Math.round(totalProfit)) + '</strong></h4>';
+        var finalWealth = payload.money - payload.totalInvested + Math.round(totalProfit);
+        html += '<p>Tài sản sau mô phỏng (tiền chưa đầu tư + giá trị đầu tư + lợi nhuận): <strong>' + fmtVND(finalWealth) + '</strong></p>';
+        simulationResult.innerHTML = html;
+        alert('Mô phỏng hoàn tất — kết quả được hiển thị phía dưới.');
+      }
+
+      // ensure UI matches storage state on load
+      initUIFromStorage();
+
+      // expose some helpers for debugging
+      window.FINOPLAY = { read: read, write: write, remove: remove, LS: LS, renderQuiz: renderQuiz };
+    })();
+  </script>
+</body>
+</html>
